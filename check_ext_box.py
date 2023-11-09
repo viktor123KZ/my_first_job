@@ -1,5 +1,6 @@
 import time
-
+from selenium import webdriver
+import pytest
 from selene import browser
 from selene import have
 
@@ -8,7 +9,16 @@ e = 'bukarev1985@gmail.com'
 address = '1, testovaya str, Almaty, Kazakhstan'
 address2 = '2, testovaya str, Almaty, Kazakhstan'
 
-def test1():
+@pytest.fixture
+def size_windows():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--window-size=1920,1080")
+    browser.config.driver_options = options
+    return browser
+
+
+
+def test1(size_windows):
     browser.open('https://demoqa.com/text-box')
     browser.element('[id="userName"]').type(a)
     browser.element('[id="userEmail"]').type(e)
