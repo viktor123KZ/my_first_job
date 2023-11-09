@@ -2,7 +2,7 @@ import time
 from selenium import webdriver
 import pytest
 from selene import browser
-from selene import have
+from selene import have, be
 
 a = 'Bukarev Viktor Vladimirovich'
 e = 'bukarev1985@gmail.com'
@@ -12,8 +12,8 @@ address2 = '2, testovaya str, Almaty, Kazakhstan'
 @pytest.fixture
 def size_windows():
     options = webdriver.ChromeOptions()
-    options.add_argument("--window-size=960,540")
-    options.add_argument('--headless')
+    options.add_argument("--window-size=1366,1080")
+    #options.add_argument('--headless')
     browser.config.driver_options = options
     return browser
 
@@ -31,3 +31,8 @@ def test1(size_windows):
     browser.element('//*[@id="output"]/div //*[@id="currentAddress"]').should(have.exact_text('Current Address :1, testovaya str, Almaty, Kazakhstan'))
     browser.element('//*[@id="output"] //*[@id="permanentAddress"]').should(have.exact_text('Permananet Address :2, testovaya str, Almaty, Kazakhstan'))
     time.sleep(4)
+
+def test_example(size_windows):
+    browser.open('https://google.com')
+    browser.element('[name="q"]').should(be.blank).type('yashaka/selene').press_enter()
+    browser.element('[id="search"]').should(have.text('Selene - User-oriented Web UI browser tests in Python'))
